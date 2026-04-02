@@ -1,0 +1,270 @@
+<!-- Summary Metrics - Small compact cards in one row -->
+<section class="kpi-row">
+  @for (pair of metricPairs; track pair.id) {
+  <div class="kpi-card kpi-card--double">
+    <div class="kpi-duo">
+      @for (metric of pair.items; track metric.id; let i = $index) {
+      <div class="kpi-block" [class.split]="i === 1">
+        <div class="kpi-label">{{ metric.label }}</div>
+        <div class="kpi-value">{{ metric.value | currency: settings().currency : 'symbol' : '1.0-0' }}</div>
+      </div>
+      }
+    </div>
+  </div>
+  }
+  <div class="kpi-card kpi-card--alerts">
+    <!-- <div class="kpi-alerts-header">Alerts</div> -->
+    <div class="card-header">
+      <h3 class="text-danger">Alerts</h3>
+      <a class="view-all" routerLink="/alerts">All <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="kpi-alerts-marquee">
+      <div class="kpi-alerts-track">
+        @for (alert of alerts; track alert.message; let i = $index) {
+        <div class="kpi-alert-item">
+          <div class="alert-dot" [class.high]="alert.level === 'high'" [class.medium]="alert.level === 'medium'"
+            [class.low]="alert.level === 'low'"></div>
+          <div class="kpi-alert-msg">{{ alert.message }}</div>
+          <span class="kpi-alert-time">{{ alert.time }}</span>
+        </div>
+        }
+        @for (alert of alerts; track alert.message + '-dup'; let i = $index) {
+        <div class="kpi-alert-item">
+          <div class="alert-dot" [class.high]="alert.level === 'high'" [class.medium]="alert.level === 'medium'"
+            [class.low]="alert.level === 'low'"></div>
+          <div class="kpi-alert-msg">{{ alert.message }}</div>
+          <span class="kpi-alert-time">{{ alert.time }}</span>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Middle: Income/Expense + Expense Mix + Recent Transactions -->
+<div class="dashboard-grid">
+  <!-- Income vs Expense Chart -->
+  <div class="card small-card report-card-mini">
+    <div class="card-header">
+      <h3>Income vs Expense</h3>
+      <span class="chip">6 Months</span>
+    </div>
+    <div class="bar-chart compact">
+      @for (point of trendPoints; track point.label) {
+      <div class="bar-col chart-tooltip"
+        [attr.data-tip]="point.label + ' | Income: ' + point.income + ' | Expense: ' + point.expense">
+        <div class="bar-wrapper">
+          <div class="bar income" [style.height.%]="point.income"></div>
+          <div class="bar expense" [style.height.%]="point.expense"></div>
+        </div>
+        <span class="bar-label">{{ point.label }}</span>
+      </div>
+      }
+    </div>
+    <div class="chart-legend">
+      <span class="legend-item"><span class="dot income"></span> Income</span>
+      <span class="legend-item"><span class="dot expense"></span> Expense</span>
+    </div>
+  </div>
+
+  <!-- Expense Mix -->
+  <div class="card small-card">
+    <div class="card-header">
+      <h3>Transaction Summary</h3>
+    </div>
+    <div class="summary-grid">
+      <button type="button" class="summary-pill debit"
+        [class.active]="filters().type === 'Debit'"
+        (click)="applyTypeFilter('Debit'); scrollToTransactions()">
+        <span>Debit</span>
+        <strong>{{ debitTotal() | currency: settings().currency : 'symbol' : '1.0-0' }}</strong>
+      </button>
+      <button type="button" class="summary-pill credit"
+        [class.active]="filters().type === 'Credit'"
+        (click)="applyTypeFilter('Credit'); scrollToTransactions()">
+        <span>Credit</span>
+        <strong>{{ creditTotal() | currency: settings().currency : 'symbol' : '1.0-0' }}</strong>
+      </button>
+    </div>
+    <div class="summary-status">
+      <button type="button" class="summary-row"
+        [class.active]="filters().status === 'Completed'"
+        (click)="applyStatusFilter('Completed'); scrollToTransactions()">
+        <span>Completed</span>
+        <strong>{{ statusCounts().Completed }}</strong>
+      </button>
+      <button type="button" class="summary-row"
+        [class.active]="filters().status === 'Pending'"
+        (click)="applyStatusFilter('Pending'); scrollToTransactions()">
+        <span>Pending</span>
+        <strong>{{ statusCounts().Pending }}</strong>
+      </button>
+      <button type="button" class="summary-row"
+        [class.active]="filters().status === 'Failed'"
+        (click)="applyStatusFilter('Failed'); scrollToTransactions()">
+        <span>Failed</span>
+        <strong>{{ statusCounts().Failed }}</strong>
+      </button>
+    </div>
+  </div>
+
+
+
+  <div class="card small-card">
+    <div class="card-header">
+      <h3>Customers</h3>
+      <a class="view-all" routerLink="/customers">All <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="customer-list">
+      @for (cust of customers; track cust.name) {
+      <div class="customer-item">
+        <div class="customer-avatar">{{ cust.name[0] }}</div>
+        <div class="customer-info">
+          <div class="customer-name">{{ cust.name }}</div>
+          <div class="customer-meta">Last tx: {{ cust.lastTransaction }}</div>
+        </div>
+        <div class="customer-metrics">
+          <div class="customer-metric">
+            <span>Total Spent</span>
+            <strong>{{ cust.totalSpent | currency: settings().currency : 'symbol' : '1.0-0' }}</strong>
+          </div>
+          <div class="customer-metric">
+            <span>Outstanding</span>
+            <strong>{{ cust.outstanding | currency: settings().currency : 'symbol' : '1.0-0' }}</strong>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+
+  <!-- Recent Transactions -->
+  <div class="card small-card">
+    <div class="card-header">
+      <h3>Expense Mix</h3>
+      <span class="chip">Categories</span>
+    </div>
+    <div class="donut-shell">
+      <div class="donut-wrap">
+        <div class="donut" [style.background]="expenseDonutGradient"></div>
+        <div class="donut-center">
+          <div class="donut-value">{{ totalExpense | currency: settings().currency : 'symbol' : '1.0-0' }}</div>
+          <div class="donut-label">Total</div>
+        </div>
+        <div class="donut-tooltip">
+          <div class="donut-tooltip-title">Expense Mix</div>
+          @for (cat of expenseCategories; track cat.name) {
+          <div class="donut-tooltip-row">
+            <span class="donut-tooltip-dot" [style.background]="cat.color"></span>
+            <span class="donut-tooltip-name">{{ cat.name }}</span>
+            <span class="donut-tooltip-pct">{{ cat.percent }}%</span>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom: Invoices + Accounts + Insights + Alerts -->
+<div class="dashboard-bottom">
+  <!-- Invoices -->
+  <div class="card small-card">
+    <div class="card-header">
+      <h3>Invoices</h3>
+      <a class="view-all" routerLink="/invoices">All <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="mini-table">
+      @for (inv of invoices; track inv.id) {
+      <div class="mini-row">
+        <span class="mono-text">{{ inv.id }}</span>
+        <span>{{ inv.client }}</span>
+        <span class="mini-amt">{{ inv.amount | currency: settings().currency : 'symbol' : '1.0-0' }}</span>
+        <span class="status-badge" [class.paid]="inv.status === 'Paid'" [class.unpaid]="inv.status === 'Unpaid'"
+          [class.overdue]="inv.status === 'Overdue'">{{ inv.status }}</span>
+      </div>
+      }
+    </div>
+  </div>
+
+  <!-- Accounts -->
+  <div class="card small-card">
+    <div class="card-header">
+      <h3>Accounts</h3>
+      <a class="view-all" routerLink="/accounts">All <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="account-list">
+      @for (acc of accounts; track acc.name) {
+      <div class="account-item">
+        <div class="acc-icon">
+          <i class="fa-solid"
+            [ngClass]="acc.type === 'Checking' ? 'fa-building-columns' : acc.type === 'Savings' ? 'fa-piggy-bank' : acc.type === 'Payroll' ? 'fa-money-bill' : 'fa-credit-card'"></i>
+        </div>
+        <div class="acc-info">
+          <div class="acc-name">{{ acc.name }}</div>
+          <div class="acc-type">{{ acc.type }}</div>
+        </div>
+        <div class="acc-balance" [class.negative]="acc.balance < 0">
+          {{ acc.balance | currency: settings().currency : 'symbol' : '1.0-0' }}
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+
+  <!-- Insights -->
+  <div class="card small-card">
+    <div class="card-header">
+      <h3>Insights</h3>
+      <a class="view-all" routerLink="/insights">All <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="insight-list">
+      @for (ins of insights; track ins.title) {
+      <div class="insight-item">
+        <i class="fa-solid fa-circle-info insight-icon"></i>
+        <div>
+          <div class="insight-title">{{ ins.title }}</div>
+          <div class="insight-detail">{{ ins.detail }}</div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+
+  <!-- Alerts -->
+  <div class="card small-card">
+    <div class="card-header">
+      <h3>Reports & Analytics</h3>
+      <a class="view-all" routerLink="/reports">All <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="report-mini-list">
+      @for (card of reportCards; track card.title) {
+        <div class="report-mini">
+          <div class="report-mini-top">
+            <div class="report-mini-title">{{ card.title }}</div>
+            <div class="report-mini-amount">
+              @if (card.title === 'Runway') {
+                {{ card.value | number: '1.1-1' }} mo
+              } @else {
+                {{ card.value | currency: settings().currency : 'symbol' : '1.0-0' }}
+              }
+            </div>
+          </div>
+          <svg class="report-mini-spark" viewBox="0 0 100 24" preserveAspectRatio="none">
+            <polyline
+              [attr.points]="card.spark
+                .map((point, index) => `${(index / (card.spark.length - 1)) * 100},${24 - (point / 45) * 24}`)
+                .join(' ')"
+            ></polyline>
+          </svg>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+
+<div class="mt-2" #transactionsSection>
+
+  <app-transactions></app-transactions>
+</div>

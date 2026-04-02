@@ -1,0 +1,114 @@
+<section class="page-section">
+  <div class="section-header">
+    <div>
+      <h2>Reports & Analytics</h2>
+      <p>Click any card to expand details</p>
+    </div>
+    <div class="chip-group">
+      <span class="chip active">Monthly</span>
+      <span class="chip">Yearly</span>
+      <span class="chip">Forecast</span>
+    </div>
+  </div>
+
+  <!-- Group of 4 small report cards in one row -->
+  <div class="report-group">
+    @for (card of reportCards; track card.title) {
+      <div class="report-card" [class.expanded]="expandedCard() === card.title" (click)="toggleExpand(card.title)">
+        <div class="report-top">
+          <div class="report-title">{{ card.title }}</div>
+          <div class="report-range">{{ card.range }}</div>
+        </div>
+        <div class="report-value">
+          @if (card.title === 'Runway') {
+            {{ card.value | number: '1.1-1' }} mo
+          } @else {
+            {{ card.value | currency: settings().currency : 'symbol' : '1.0-0' }}
+          }
+        </div>
+        <div class="report-change" [class.down]="card.trend === 'down'">
+          <i class="fa-solid" [ngClass]="card.trend === 'up' ? 'fa-caret-up' : 'fa-caret-down'"></i>
+          <span>{{ card.change | number: '1.1-1' }}%</span>
+        </div>
+        <!-- Mini sparkline -->
+        <svg class="sparkline" viewBox="0 0 100 24" preserveAspectRatio="none">
+          <polyline
+            [attr.points]="card.spark
+              .map((point, index) => `${(index / (card.spark.length - 1)) * 100},${24 - (point / 45) * 24}`)
+              .join(' ')"
+          ></polyline>
+        </svg>
+
+        <!-- Expanded detail area -->
+        @if (expandedCard() === card.title) {
+          <div class="expanded-detail">
+            <div class="detail-header">{{ card.title }} - Detailed View</div>
+            <div class="detail-grid">
+              @for (point of card.spark; track $index; let i = $index) {
+                <div class="detail-bar">
+                  <div class="detail-bar-fill" [style.height.%]="(point / 45) * 100"></div>
+                  <span class="detail-label">{{ i + 1 }}</span>
+                </div>
+              }
+            </div>
+            <div class="detail-info">
+              <span>Range: {{ card.range }}</span>
+              <span>Trend: {{ card.trend }}</span>
+              <span>Change: {{ card.change }}%</span>
+            </div>
+          </div>
+        }
+
+        <div class="expand-hint">
+          <i class="fa-solid" [ngClass]="expandedCard() === card.title ? 'fa-compress' : 'fa-expand'"></i>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Income vs Expense Trend -->
+  <div class="card">
+    <div class="card-header">
+      <h3>Income vs Expense Trend</h3>
+      <span class="chip">6 Months</span>
+    </div>
+    <div class="trend-chart">
+      @for (point of trendPoints; track point.label) {
+        <div class="trend-col">
+          <div class="trend-bars">
+            <div class="trend-bar income" [style.height.%]="point.income"></div>
+            <div class="trend-bar expense" [style.height.%]="point.expense"></div>
+          </div>
+          <span class="trend-label">{{ point.label }}</span>
+        </div>
+      }
+    </div>
+    <div class="chart-legend">
+      <span class="legend-item"><span class="dot income"></span> Income</span>
+      <span class="legend-item"><span class="dot expense"></span> Expense</span>
+    </div>
+  </div>
+
+  <!-- Expense Breakdown -->
+  <div class="card">
+    <div class="card-header">
+      <h3>Expense Breakdown</h3>
+      <span class="chip">By Category</span>
+    </div>
+    <div class="expense-breakdown">
+      @for (cat of expenseCategories; track cat.name) {
+        <div class="expense-row">
+          <div class="expense-info">
+            <span class="expense-dot" [style.background]="cat.color"></span>
+            <span class="expense-name">{{ cat.name }}</span>
+          </div>
+          <div class="expense-bar-wrap">
+            <div class="expense-bar-fill" [style.width.%]="cat.percent" [style.background]="cat.color"></div>
+          </div>
+          <span class="expense-pct">{{ cat.percent }}%</span>
+          <span class="expense-amt">{{ cat.amount | currency: settings().currency : 'symbol' : '1.0-0' }}</span>
+        </div>
+      }
+    </div>
+  </div>
+</section>

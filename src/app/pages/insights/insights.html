@@ -1,0 +1,60 @@
+<section class="page-section">
+  <div class="section-header">
+    <div>
+      <h2>Insights</h2>
+      <p>Key financial observations and analysis</p>
+    </div>
+  </div>
+
+  <div class="insights-grid">
+    @for (ins of insights; track ins.title) {
+      <div class="insight-card">
+        <div class="insight-icon">
+          <i class="fa-solid fa-lightbulb"></i>
+        </div>
+        <div class="insight-content">
+          <div class="insight-title">{{ ins.title }}</div>
+          <div class="insight-detail">{{ ins.detail }}</div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Quick Stats -->
+  <div class="card">
+    <div class="card-header">
+      <h3>Quick Summary</h3>
+    </div>
+    <div class="quick-stats">
+      @for (metric of metrics; track metric.id) {
+        <div class="quick-stat">
+          <span class="qs-label">{{ metric.label }}</span>
+          <span class="qs-value">{{ metric.value | currency: settings().currency : 'symbol' : '1.0-0' }}</span>
+          <span class="qs-change" [class.up]="metric.trend === 'up'" [class.down]="metric.trend === 'down'">
+            <i class="fa-solid" [ngClass]="metric.trend === 'up' ? 'fa-caret-up' : 'fa-caret-down'"></i>
+            {{ metric.change }}%
+          </span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Top Expense Categories -->
+  <div class="card">
+    <div class="card-header">
+      <h3>Top Expense Categories</h3>
+    </div>
+    <div class="top-expenses">
+      @for (cat of expenseCategories.slice(0, 4); track cat.name) {
+        <div class="top-expense-item">
+          <span class="te-dot" [style.background]="cat.color"></span>
+          <span class="te-name">{{ cat.name }}</span>
+          <div class="te-bar-wrap">
+            <div class="te-bar" [style.width.%]="cat.percent * 3" [style.background]="cat.color"></div>
+          </div>
+          <span class="te-pct">{{ cat.percent }}%</span>
+        </div>
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,31 @@
+<div
+  class="app-shell"
+  [class.sidebar-collapsed]="sidebarCollapsed()"
+  [attr.data-theme]="theme()"
+>
+  <app-sidebar
+    [collapsed]="sidebarCollapsed()"
+    [role]="role()"
+    (toggleTheme)="toggleTheme()"
+    (toggleSidebar)="toggleSidebar()"
+  ></app-sidebar>
+
+  <main class="main">
+    <app-header
+      [role]="role()"
+      [roleOptions]="roleOptions"
+      [isAdmin]="isAdmin()"
+      (toggleSidebar)="toggleSidebar()"
+      (roleChange)="setRole($event)"
+    ></app-header>
+
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+
+    <app-footer></app-footer>
+  </main>
+</div>
+
+<app-toast></app-toast>
+<app-loader></app-loader>

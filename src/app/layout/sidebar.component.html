@@ -1,0 +1,79 @@
+<aside class="sidebar" [class.collapsed]="collapsed" [class.open]="collapsed">
+  <div class="brand">
+    <div class="logo">
+      <i class="fa-solid fa-chart-line"></i>
+    </div>
+    <div class="brand-text">
+      <div class="brand-title">FinanceDesk</div>
+      <div class="brand-subtitle">Dashboard</div>
+    </div>
+    <button class="sidebar-close" type="button" (click)="toggleSidebar.emit()">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <nav class="nav">
+    <div class="nav-section-label">Main</div>
+
+    <a class="nav-item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <i class="fa-solid fa-grid-2"></i>
+      <span>Dashboard</span>
+    </a>
+
+    <a class="nav-item" routerLink="/transactions" routerLinkActive="active">
+      <i class="fa-solid fa-arrow-right-arrow-left"></i>
+      <span>Transactions</span>
+    </a>
+
+    <a class="nav-item" routerLink="/invoices" routerLinkActive="active">
+      <i class="fa-solid fa-file-invoice"></i>
+      <span>Invoices</span>
+    </a>
+
+    <a class="nav-item" routerLink="/customers" routerLinkActive="active">
+      <i class="fa-solid fa-users"></i>
+      <span>Customers</span>
+    </a>
+
+    <div class="nav-section-label">Finance</div>
+
+    <a class="nav-item" routerLink="/accounts" routerLinkActive="active">
+      <i class="fa-solid fa-wallet"></i>
+      <span>Accounts</span>
+    </a>
+
+    <a class="nav-item" routerLink="/reports" routerLinkActive="active">
+      <i class="fa-solid fa-chart-pie"></i>
+      <span>Reports</span>
+    </a>
+
+    <a class="nav-item" routerLink="/insights" routerLinkActive="active">
+      <i class="fa-solid fa-lightbulb"></i>
+      <span>Insights</span>
+    </a>
+
+    <a class="nav-item" routerLink="/alerts" routerLinkActive="active">
+      <i class="fa-solid fa-bell"></i>
+      <span>Alerts</span>
+      <span class="badge-dot"></span>
+    </a>
+
+    <div class="nav-section-label">System</div>
+
+    <a class="nav-item" routerLink="/settings" routerLinkActive="active">
+      <i class="fa-solid fa-gear"></i>
+      <span>Settings</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="role-pill" [class.viewer]="role === 'viewer'">
+      <i class="fa-solid" [ngClass]="role === 'admin' ? 'fa-shield-halved' : 'fa-eye'"></i>
+      <span>{{ role | titlecase }}</span>
+    </div>
+    <button class="theme-btn" type="button" (click)="toggleTheme.emit()">
+      <i class="fa-solid fa-circle-half-stroke"></i>
+      <span>Theme</span>
+    </button>
+  </div>
+</aside>

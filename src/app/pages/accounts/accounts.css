@@ -1,0 +1,103 @@
+.page-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.section-header p {
+  margin: 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.total-balance {
+  text-align: right;
+}
+
+.total-label {
+  display: block;
+  font-size: 9px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.total-value {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--accent);
+}
+
+.account-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 8px;
+}
+
+.account-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 8px;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.15s ease;
+}
+
+.account-card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.acc-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--panel-muted);
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  font-size: 14px;
+  grid-row: span 2;
+}
+
+.acc-name {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.acc-type {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.acc-balance {
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'IBM Plex Mono', monospace;
+  text-align: right;
+}
+
+.acc-balance.negative {
+  color: var(--danger);
+}
+
+.acc-updated {
+  grid-column: 2 / -1;
+  font-size: 9px;
+  color: var(--muted);
+}

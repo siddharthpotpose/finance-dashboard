@@ -1,0 +1,49 @@
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="icon-btn menu-btn" type="button" (click)="toggleSidebar.emit()">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <div class="breadcrumb">
+      <span class="breadcrumb-item">FinanceDesk</span>
+      <i class="fa-solid fa-chevron-right breadcrumb-sep"></i>
+      <span class="breadcrumb-current">Dashboard</span>
+    </div>
+  </div>
+
+  <nav class="topbar-nav">
+    <a class="topbar-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Overview</a>
+    <a class="topbar-link" routerLink="/transactions" routerLinkActive="active">Transactions</a>
+    <a class="topbar-link" routerLink="/reports" routerLinkActive="active">Reports</a>
+    <a class="topbar-link" routerLink="/invoices" routerLinkActive="active">Invoices</a>
+  </nav>
+
+  <div class="topbar-right">
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" placeholder="Search..." />
+    </div>
+
+    <button class="icon-btn notif-btn" type="button" routerLink="/alerts">
+      <i class="fa-regular fa-bell"></i>
+      <span class="notif-dot"></span>
+    </button>
+
+    <div class="role-switch">
+      <select [value]="role" (change)="roleChange.emit($any($event.target).value)">
+        @for (option of roleOptions; track option) {
+          <option [value]="option">{{ option | titlecase }}</option>
+        }
+      </select>
+    </div>
+
+    <button class="add-btn" type="button" [disabled]="!isAdmin">
+      <i class="fa-solid fa-plus"></i>
+      <span>New</span>
+    </button>
+
+    <div class="avatar">
+      <span>JD</span>
+    </div>
+  </div>
+</header>

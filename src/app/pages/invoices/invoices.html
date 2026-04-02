@@ -1,0 +1,58 @@
+<section class="page-section">
+  <div class="section-header">
+    <div>
+      <h2>Invoices & Billing</h2>
+      <p>Track paid, unpaid, and overdue invoices</p>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="summary-row">
+    <div class="summary-card">
+      <div class="summary-label">Paid</div>
+      <div class="summary-value success">{{ totalPaid | currency: settings().currency : 'symbol' : '1.0-0' }}</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">Unpaid</div>
+      <div class="summary-value warning">{{ totalUnpaid | currency: settings().currency : 'symbol' : '1.0-0' }}</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">Overdue</div>
+      <div class="summary-value danger">{{ totalOverdue | currency: settings().currency : 'symbol' : '1.0-0' }}</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">Total Invoices</div>
+      <div class="summary-value">{{ invoices.length }}</div>
+    </div>
+  </div>
+
+  <!-- Invoice Table -->
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Invoice ID</th>
+          <th>Client</th>
+          <th>Amount</th>
+          <th>Due Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (inv of invoices; track inv.id) {
+          <tr>
+            <td class="mono">{{ inv.id }}</td>
+            <td>{{ inv.client }}</td>
+            <td class="amount">{{ inv.amount | currency: settings().currency : 'symbol' : '1.0-0' }}</td>
+            <td class="mono">{{ inv.dueDate }}</td>
+            <td>
+              <span class="status-badge" [class.paid]="inv.status === 'Paid'" [class.unpaid]="inv.status === 'Unpaid'" [class.overdue]="inv.status === 'Overdue'">
+                {{ inv.status }}
+              </span>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

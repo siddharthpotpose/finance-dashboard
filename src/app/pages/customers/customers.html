@@ -1,0 +1,30 @@
+<section class="page-section">
+  <div class="section-header">
+    <div>
+      <h2>Customers</h2>
+      <p>Customer accounts and spending overview</p>
+    </div>
+  </div>
+
+  <div class="customer-grid">
+    @for (cust of customers; track cust.name) {
+      <div class="customer-card">
+        <div class="cust-avatar">{{ cust.name.charAt(0) }}</div>
+        <div class="cust-info">
+          <div class="cust-name">{{ cust.name }}</div>
+          <div class="cust-meta">Last tx: {{ cust.lastTransaction }}</div>
+        </div>
+        <div class="cust-stats">
+          <div class="stat">
+            <span class="stat-label">Total Spent</span>
+            <span class="stat-value">{{ cust.totalSpent | currency: settings().currency : 'symbol' : '1.0-0' }}</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Outstanding</span>
+            <span class="stat-value" [class.has-outstanding]="cust.outstanding > 0">{{ cust.outstanding | currency: settings().currency : 'symbol' : '1.0-0' }}</span>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</section>

@@ -1,0 +1,30 @@
+<section class="page-section">
+  <div class="section-header">
+    <div>
+      <h2>Accounts & Wallets</h2>
+      <p>Cash positions across all ledgers</p>
+    </div>
+    <div class="total-balance">
+      <span class="total-label">Total Balance</span>
+      <span class="total-value">{{ totalBalance | currency: settings().currency : 'symbol' : '1.0-0' }}</span>
+    </div>
+  </div>
+
+  <div class="account-grid">
+    @for (acc of accounts; track acc.name) {
+      <div class="account-card">
+        <div class="acc-icon-wrap">
+          <i class="fa-solid" [ngClass]="acc.type === 'Checking' ? 'fa-building-columns' : acc.type === 'Savings' ? 'fa-piggy-bank' : acc.type === 'Payroll' ? 'fa-money-bill' : 'fa-credit-card'"></i>
+        </div>
+        <div class="acc-details">
+          <div class="acc-name">{{ acc.name }}</div>
+          <div class="acc-type">{{ acc.type }}</div>
+        </div>
+        <div class="acc-balance" [class.negative]="acc.balance < 0">
+          {{ acc.balance | currency: settings().currency : 'symbol' : '1.0-0' }}
+        </div>
+        <div class="acc-updated">Updated: {{ acc.updated }}</div>
+      </div>
+    }
+  </div>
+</section>
