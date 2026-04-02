@@ -14,6 +14,7 @@
   margin: 0;
   font-size: 15px;
   font-weight: 700;
+  color: var(--text);
 }
 
 .section-header p {
@@ -88,6 +89,7 @@
 .report-title {
   font-size: 12px;
   font-weight: 700;
+  color: var(--text);
 }
 
 .report-range {
@@ -102,6 +104,7 @@
   font-size: 18px;
   font-weight: 700;
   font-family: 'Space Grotesk', sans-serif;
+  color: var(--text);
 }
 
 .report-change {
@@ -213,6 +216,7 @@
   margin: 0;
   font-size: 13px;
   font-weight: 700;
+  color: var(--text);
 }
 
 /* Trend Chart */
@@ -250,7 +254,7 @@
 
 .trend-label {
   font-size: 9px;
-  color: var(--muted);
+  color: var(--text);
   font-weight: 600;
 }
 
@@ -265,7 +269,7 @@
   align-items: center;
   gap: 4px;
   font-size: 10px;
-  color: var(--muted);
+  color: var(--text);
 }
 
 .dot {
@@ -307,6 +311,7 @@
 .expense-name {
   font-size: 11px;
   font-weight: 600;
+  color: var(--text);
 }
 
 .expense-bar-wrap {
@@ -326,7 +331,7 @@
 .expense-pct {
   font-size: 10px;
   font-weight: 700;
-  color: var(--muted);
+  color: var(--text);
   width: 30px;
   text-align: right;
 }
@@ -335,6 +340,7 @@
   font-size: 11px;
   font-weight: 700;
   font-family: 'IBM Plex Mono', monospace;
+  color: var(--text);
   width: 70px;
   text-align: right;
 }

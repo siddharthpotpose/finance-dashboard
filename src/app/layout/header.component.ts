@@ -17,4 +17,5 @@ export class HeaderComponent {
 
   @Output() toggleSidebar = new EventEmitter<void>();
   @Output() roleChange = new EventEmitter<Role>();
+  @Output() toggleTheme = new EventEmitter<void>();
 }

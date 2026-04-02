@@ -8,6 +8,7 @@
   margin: 0;
   font-size: 15px;
   font-weight: 700;
+  color: var(--text);
 }
 
 .section-header p {
@@ -52,6 +53,7 @@
 .insight-title {
   font-size: 13px;
   font-weight: 700;
+  color: var(--text);
 }
 
 .insight-detail {
@@ -76,6 +78,7 @@
   margin: 0;
   font-size: 13px;
   font-weight: 700;
+  color: var(--text);
 }
 
 .quick-stats {
@@ -104,6 +107,7 @@
   font-size: 14px;
   font-weight: 700;
   font-family: 'Space Grotesk', sans-serif;
+  color: var(--text);
 }
 
 .qs-change {
@@ -137,6 +141,7 @@
   font-size: 11px;
   font-weight: 600;
   width: 90px;
+  color: var(--text);
 }
 
 .te-bar-wrap {
@@ -155,7 +160,7 @@
 .te-pct {
   font-size: 10px;
   font-weight: 700;
-  color: var(--muted);
+  color: var(--text);
   width: 30px;
   text-align: right;
 }
