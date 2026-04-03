@@ -9,7 +9,7 @@ import { Role } from '../models/finance.models';
   imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
-})
+}) 
 export class SidebarComponent {
   @Input() collapsed = false;
   @Input() role: Role = 'admin';

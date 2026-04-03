@@ -127,9 +127,9 @@ export class DashboardPageComponent {
       receivable: 'fa-hand-holding-dollar',
       payable: 'fa-hand-holding-hand',
     };
-    return iconMap[metric.id] || 'fa-chart-pie';
+    return iconMap[metric.id] || 'fa-chart-pie'; 
   }
-
+  
   getMetricPairClass(index: number): string {
     const classes = ['kpi-card--income', 'kpi-card--expense', 'kpi-card--balance', 'kpi-card--savings'];
     return classes[index % classes.length];

@@ -15,4 +15,4 @@ export class Insights {
   readonly insights = INSIGHTS;
   readonly metrics = SUMMARY_METRICS;
   readonly expenseCategories = EXPENSE_CATEGORIES;
-}
+} 

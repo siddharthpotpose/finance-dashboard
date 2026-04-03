@@ -7,7 +7,7 @@ import { ToastService, ToastMessage } from '../services/toast.service';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="toast-container">
+    <div class="toast-container"> 
       @for (toast of toastService.toasts(); track toast.id) {
         <div class="toast-item" [class]="'toast-' + toast.type" (click)="toastService.dismiss(toast.id)">
           <i class="fa-solid" [ngClass]="{
