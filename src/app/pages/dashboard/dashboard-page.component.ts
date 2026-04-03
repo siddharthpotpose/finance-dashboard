@@ -130,6 +130,25 @@ export class DashboardPageComponent {
     return iconMap[metric.id] || 'fa-chart-pie';
   }
 
+  getMetricPairClass(index: number): string {
+    const classes = ['kpi-card--income', 'kpi-card--expense', 'kpi-card--balance', 'kpi-card--savings'];
+    return classes[index % classes.length];
+  }
+
+  getMetricColor(metricId: string): string {
+    const colorMap: Record<string, string> = {
+      revenue: '#059669',
+      expenses: '#dc2626',
+      profit: '#059669',
+      cash: '#0f766e',
+      'invoice-paid': '#059669',
+      'invoice-unpaid': '#d97706',
+      receivable: '#0f766e',
+      payable: '#d97706',
+    };
+    return colorMap[metricId] || '#0f766e';
+  }
+
   private buildExpenseDonutGradient(categories: ExpenseCategory[]): string {
     let start = 0;
     const segments = categories.map((cat) => {

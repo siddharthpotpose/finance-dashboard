@@ -1,7 +1,7 @@
 <!-- Summary Metrics - Small compact cards in one row -->
 <section class="kpi-row">
-  @for (pair of metricPairs; track pair.id) {
-  <div class="kpi-card kpi-card--double">
+  @for (pair of metricPairs; track pair.id; let idx = $index) {
+  <div class="kpi-card kpi-card--double" [ngClass]="getMetricPairClass(idx)">
     <div class="kpi-duo">
       @for (metric of pair.items; track metric.id; let i = $index) {
       <div class="kpi-block" [class.split]="i === 1">
@@ -9,7 +9,7 @@
         </div>
           <div class="kpi-icon-wrapper d-flex justify-content-between" aria-hidden="true">
               <div class="kpi-value">{{ metric.value | currency: settings().currency : 'symbol' : '1.0-0' }}</div>
-          <i class="fa-solid {{ getMetricIcon(metric) }}" style="font-size: large;"></i>
+          <i class="fa-solid {{ getMetricIcon(metric) }}" [style.color]="getMetricColor(metric.id)"></i>
         </div>
       </div>
       }
@@ -25,7 +25,8 @@
     <div class="kpi-alerts-marquee">
       <div class="kpi-alerts-track">
         @for (alert of alerts; track alert.message; let i = $index) {
-        <div class="kpi-alert-item">
+        <div class="kpi-alert-item" [class.high]="alert.level === 'high'" [class.medium]="alert.level === 'medium'"
+          [class.low]="alert.level === 'low'">
           <div class="alert-dot" [class.high]="alert.level === 'high'" [class.medium]="alert.level === 'medium'"
             [class.low]="alert.level === 'low'"></div>
           <div class="kpi-alert-msg">{{ alert.message }}</div>
@@ -33,7 +34,8 @@
         </div>
         }
         @for (alert of alerts; track alert.message + '-dup'; let i = $index) {
-        <div class="kpi-alert-item">
+        <div class="kpi-alert-item" [class.high]="alert.level === 'high'" [class.medium]="alert.level === 'medium'"
+          [class.low]="alert.level === 'low'">
           <div class="alert-dot" [class.high]="alert.level === 'high'" [class.medium]="alert.level === 'medium'"
             [class.low]="alert.level === 'low'"></div>
           <div class="kpi-alert-msg">{{ alert.message }}</div>
@@ -46,7 +48,7 @@
 </section>
 
 <!-- Middle: Income/Expense + Expense Mix + Recent Transactions -->
-<div class="dashboard-grid">
+<div class="dashboard-grid mt-1">
   <!-- Income vs Expense Chart -->
   <div class="card small-card report-card-mini">
     <div class="card-header">
@@ -171,7 +173,7 @@
 </div>
 
 <!-- Bottom: Invoices + Accounts + Insights + Alerts -->
-<div class="dashboard-bottom">
+<div class="dashboard-bottom mt-1">
   <!-- Invoices -->
   <div class="card small-card">
     <div class="card-header">
