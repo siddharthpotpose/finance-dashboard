@@ -116,6 +116,19 @@ export class DashboardPageComponent {
     return pairs;
   }
 
+  getMetricIcon(metric: Metric): string {
+    const iconMap: Record<string, string> = {
+      revenue: 'fa-chart-line',
+      expenses: 'fa-money-bill-wave',
+      profit: 'fa-coins',
+      cash: 'fa-wallet',
+      'invoice-paid': 'fa-file-invoice-dollar',
+      'invoice-unpaid': 'fa-file-invoice',
+      receivable: 'fa-hand-holding-dollar',
+      payable: 'fa-hand-holding-hand',
+    };
+    return iconMap[metric.id] || 'fa-chart-pie';
+  }
 
   private buildExpenseDonutGradient(categories: ExpenseCategory[]): string {
     let start = 0;

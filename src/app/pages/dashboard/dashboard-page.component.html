@@ -5,8 +5,12 @@
     <div class="kpi-duo">
       @for (metric of pair.items; track metric.id; let i = $index) {
       <div class="kpi-block" [class.split]="i === 1">
-        <div class="kpi-label">{{ metric.label }}</div>
-        <div class="kpi-value">{{ metric.value | currency: settings().currency : 'symbol' : '1.0-0' }}</div>
+        <div class="kpi-label">{{ metric.label }}
+        </div>
+          <div class="kpi-icon-wrapper d-flex justify-content-between" aria-hidden="true">
+              <div class="kpi-value">{{ metric.value | currency: settings().currency : 'symbol' : '1.0-0' }}</div>
+          <i class="fa-solid {{ getMetricIcon(metric) }}" style="font-size: large;"></i>
+        </div>
       </div>
       }
     </div>
@@ -15,7 +19,7 @@
   <div class="kpi-card kpi-card--alerts">
     <!-- <div class="kpi-alerts-header">Alerts</div> -->
     <div class="card-header">
-      <h3 class="text-danger">Alerts</h3>
+      <h3 class="alert-title">Alerts</h3>
       <a class="view-all" routerLink="/alerts">All <i class="fa-solid fa-arrow-right"></i></a>
     </div>
     <div class="kpi-alerts-marquee">

@@ -17,6 +17,11 @@
   transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
 
+.kpi-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
+}
+
 .kpi-card--double {
   padding: 10px;
   grid-column: span 2;
@@ -107,11 +112,6 @@
   100% { transform: translateY(-50%); }
 }
 
-.kpi-card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-1px);
-}
-
 .kpi-label {
   font-size: 10px;
   color: var(--muted);
@@ -164,6 +164,11 @@
   flex-direction: column;
   gap: 10px;
   box-shadow: var(--shadow);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
 }
 
 .card-header {

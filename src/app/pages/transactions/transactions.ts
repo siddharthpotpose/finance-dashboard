@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, signal } from '@angular/core';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ExportService } from '../../services/export.service';
 import { ToastService } from '../../services/toast.service';
@@ -11,15 +12,19 @@ import { CustomValidators } from '../../utils/validators';
 
 @Component({
   selector: 'app-transactions',
+  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    DaterangepickerDirective
+    NgbPaginationModule,
+    DaterangepickerDirective,
   ],
   templateUrl: './transactions.html',
   styleUrl: './transactions.css',
 })
 export class Transactions {
+  readonly Math = Math;
+  
   private readonly store = inject(DashboardState);
   private readonly exportService = inject(ExportService);
   private readonly toastService = inject(ToastService);
@@ -37,6 +42,24 @@ export class Transactions {
   readonly isEditMode = signal(false);
   readonly isDeleteModalOpen = signal(false);
   readonly selectedTransaction = signal<Transaction | null>(null);
+
+  // Pagination
+  readonly pageSize = 10;
+  readonly currentPage = signal(1);
+  readonly totalPages = computed(() => Math.ceil(this.transactions().length / this.pageSize));
+  readonly paginatedTransactions = computed(() => {
+    const start = (this.currentPage() - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    return this.transactions().slice(start, end);
+  });
+
+  readonly paginatedTransactionsWithIndex = computed(() => {
+    const offset = (this.currentPage() - 1) * this.pageSize;
+    return this.paginatedTransactions().map((tx, idx) => ({
+      ...tx,
+      rowNumber: offset + idx + 1
+    }));
+  });
 
   readonly statusOptions = ['All', 'Completed', 'Pending', 'Failed'];
   readonly typeOptions = ['All', 'Credit', 'Debit'];
@@ -86,6 +109,7 @@ export class Transactions {
   constructor() {
     this.filtersForm.valueChanges.subscribe((value) => {
       this.store.setFilters(value as FilterState);
+      this.currentPage.set(1);
     });
     effect(() => {
       this.filtersForm.patchValue(this.store.filters(), { emitEvent: false });
@@ -104,6 +128,7 @@ export class Transactions {
   resetFilters(): void {
     this.store.resetFilters();
     this.filtersForm.patchValue(DEFAULT_FILTERS, { emitEvent: false });
+    this.currentPage.set(1);
   }
 
   setSort(key: keyof Transaction): void {
@@ -111,6 +136,25 @@ export class Transactions {
     const direction: SortState['direction'] =
       current.key === key && current.direction === 'asc' ? 'desc' : 'asc';
     this.store.setSort({ key, direction });
+    this.currentPage.set(1);
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages()) {
+      this.currentPage.set(page);
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage() > 1) {
+      this.currentPage.update(p => p - 1);
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage() < this.totalPages()) {
+      this.currentPage.update(p => p + 1);
+    }
   }
 
   openAddModal(): void {
@@ -179,6 +223,7 @@ export class Transactions {
       this.loaderService.hide();
       this.closeTransactionModal();
       this.toastService.success('Transaction ' + transaction.id + ' added successfully');
+      this.currentPage.set(1);
     }, 500);
   }
 
